@@ -1,91 +1,139 @@
-# Beginner Project 09 - Local VMs with Terraform and Vagrant
+# Beginner Project 09 - Secure VMs with Terraform and Vagrant
 
 ## Subject
 
-Build the same local virtual-machine infrastructure in two ways: first with Vagrant, then with Terraform and the libvirt provider.
+Create and secure a local multi-VM infrastructure with Terraform, Vagrant and VirtualBox. Terraform is the main interface. The Terraform Vagrant provider runs the `Vagrantfile`, and Vagrant creates and manages the virtual machines.
 
-This project does not make Terraform execute Vagrant. Each tool creates its own version of the same lab so students can compare their workflows safely.
+The finished VMs must behave like small VPS servers and have Docker Engine and Docker Compose v2 installed automatically.
 
 ## Architecture
 
 ```text
-Student Linux machine or instructor lab host
-├── Vagrant implementation
-│   ├── web-1 VM
-│   ├── web-2 VM
-│   └── database VM
-└── Terraform implementation
-    ├── libvirt network
-    ├── web-1 VM
-    ├── web-2 VM
-    ├── database VM
-    └── persistent database disk
+terraform apply
+       |
+       v
+Terraform Vagrant provider
+       |
+       v
+Vagrantfile and Vagrant CLI
+       |
+       v
+VirtualBox
+├── web-1
+├── web-2
+└── database
 ```
-
-Run only one implementation at a time unless the machine has enough resources and the networks do not overlap.
 
 ## Learning Goals
 
-- Understand how Vagrant and Terraform manage VM lifecycles.
-- Create local VMs, virtual networks and storage as code.
-- Understand Terraform providers, resources, variables, outputs and state.
-- Use cloud-init to bootstrap a VM.
-- Use `terraform plan` before making infrastructure changes.
-- Detect infrastructure drift.
-- Compare a development-environment tool with an Infrastructure as Code tool.
+- Use Terraform variables, resources, outputs and state.
+- Use Terraform to control a Vagrant multi-machine environment.
+- Define VM resources, networks and storage in a `Vagrantfile`.
+- Apply basic VPS security to Linux machines.
+- Install Docker Engine and Docker Compose automatically.
+- Write repeatable and idempotent provisioning scripts.
+- Verify that private services are not exposed to the host.
+
+## Important Tool Limitation
+
+This project uses the community `bmatcuk/vagrant` Terraform provider. It runs the local Vagrant CLI and reads the selected `Vagrantfile`. It is suitable for this learning lab, but it is not an official HashiCorp provider and must not be presented as a production architecture.
+
+Removing only one machine from a multi-machine `Vagrantfile` may leave an orphan VM. Students must destroy that machine before removing its definition, or destroy and rebuild the complete lab.
 
 ## Prerequisites
 
-- A Linux host with hardware virtualization enabled.
-- KVM and libvirt for the Terraform implementation.
-- Vagrant with a compatible provider for the Vagrant implementation.
-- Enough capacity for three small VMs. A practical minimum is 4 CPU threads, 8 GB RAM and 30 GB free disk space.
+- Terraform.
+- Vagrant.
+- VirtualBox or another instructor-approved Vagrant provider.
+- Hardware virtualization enabled.
+- At least 4 CPU threads, 8 GB RAM and 30 GB free disk space recommended.
+- A host-only subnet that does not conflict with an existing local network.
 
-Students who cannot run KVM locally should use an instructor-provided Linux lab host.
+## Required VM Topology
 
-## VM Topology
+Create three Linux VMs using a supported Debian or Ubuntu Server release:
 
-Create three VMs:
+| VM | Purpose | Frontend IP | Backend IP |
+| --- | --- | --- | --- |
+| `web-1` | First Docker application host | `192.168.56.21` | `192.168.57.21` |
+| `web-2` | Second Docker application host | `192.168.56.22` | `192.168.57.22` |
+| `database` | Private Docker database host | None | `192.168.57.30` |
 
-| VM | Purpose | Example private IP |
-| --- | --- | --- |
-| `web-1` | First web server | `192.168.56.21` |
-| `web-2` | Second web server | `192.168.56.22` |
-| `database` | Private database server | `192.168.57.30` |
+The addresses may be changed to avoid conflicts, but the design must keep the frontend and backend networks separate.
 
-The exact addresses may be changed to avoid conflicts. The final design must include:
+## Terraform Requirements
 
-- A public or frontend network for the web VMs.
-- A private backend network shared by the web VMs and database VM.
-- No database port exposed to the host network.
-- SSH access using keys.
-- A persistent disk attached to the database VM.
-
-## Part 1 - Vagrant Implementation
-
-- Reuse and extend the ideas from Project 03.
-- Create the three VMs in one `Vagrantfile`.
-- Pin the Vagrant box version.
-- Define hostnames, CPU, memory and network interfaces.
-- Add a persistent disk for the database VM if the selected provider supports it.
-- Use provisioning only for basic bootstrap tasks such as users, SSH keys and required packages.
-- Start the complete lab with `vagrant up`.
-- Verify it, stop it with `vagrant halt`, and remove it with `vagrant destroy`.
-
-## Part 2 - Terraform Implementation
-
-- Recreate the same VM topology using Terraform.
-- Use the `dmacvicar/libvirt` provider with a pinned version.
-- Create libvirt networks, storage volumes and virtual-machine domains as Terraform resources.
-- Use a supported Linux cloud image and cloud-init.
-- Create at least one reusable VM module.
-- Use typed variables for VM names, CPU, memory, disk size and network addresses.
-- Produce outputs for VM names, IP addresses and safe SSH connection information.
+- Pin the Terraform version and `bmatcuk/vagrant` provider version.
+- Use a `vagrant_vm` resource that points to the directory containing the `Vagrantfile`.
+- Use variables for VM names, CPU, memory, IP addresses and the selected box version.
+- Pass approved values to the Vagrant environment instead of generating untracked configuration.
+- Create outputs for VM names, private IP addresses and safe SSH commands.
 - Commit `.terraform.lock.hcl`.
-- Ignore Terraform state, saved plans, local variable files, generated disks and secrets.
-- Never use `local-exec` to run `vagrant up` from Terraform.
+- Ignore state, saved plans, local variable files, generated keys and VirtualBox metadata.
+- Do not put passwords or private keys in Terraform code or state intentionally.
+- Use Terraform as the normal lifecycle interface; direct Vagrant commands are only for troubleshooting and orphan cleanup.
 
-## Required Terraform Workflow
+## Vagrant Requirements
+
+- Define all three machines in one `Vagrantfile`.
+- Pin a supported box version.
+- Configure hostnames, CPU, memory and private network interfaces.
+- Keep the database VM off the frontend network.
+- Use Vagrant's generated SSH key behavior or a project-specific generated key. Do not commit private keys.
+- Keep provisioning logic in separate scripts.
+- Make every provisioning script safe to run more than once.
+- Add a persistent virtual disk for database data when supported by the selected Vagrant provider.
+
+## VPS Security Requirements
+
+Apply the following rules to every VM:
+
+- Create a non-root administrative user.
+- Use SSH key authentication.
+- Disable root SSH login.
+- Disable SSH password authentication after key access has been tested.
+- Use a default-deny incoming firewall policy.
+- Allow SSH only from the host or approved management subnet.
+- Install security updates during provisioning.
+- Enable automatic security updates.
+- Install and enable Fail2ban for SSH.
+- Enable time synchronization.
+- Remove or disable services that are not required.
+- Configure a clear hostname and correct `/etc/hosts` entries.
+- Do not expose the Docker daemon socket or API over the network.
+- Do not store real secrets in provisioning scripts, Terraform files or the `Vagrantfile`.
+
+Do not break Vagrant's SSH access while hardening the machines. Verify key-based access before disabling password authentication and keep the key used by Vagrant available to the Terraform Vagrant provider.
+
+## Firewall Rules
+
+- `web-1` and `web-2` may accept ports `80` and `443` on the frontend network.
+- SSH must be limited to the host or management subnet.
+- The database service port must be allowed only from `web-1` and `web-2` on the backend network.
+- The database service port must not be reachable directly from the host or frontend network.
+- All other incoming traffic must be denied unless it is documented and approved.
+
+## Docker Requirements
+
+Install the following on all three VMs:
+
+- Docker Engine from an approved package source.
+- Docker Compose v2 as the Docker CLI plugin.
+- Required container runtime dependencies.
+
+Configuration requirements:
+
+- Enable and start Docker at boot.
+- Verify Docker with a small test container.
+- Verify Compose with `docker compose version`.
+- Configure Docker log rotation so container logs cannot fill the disk.
+- Do not publish database ports on the frontend interface.
+- Use restart policies for long-running containers.
+- Add only the approved deployment user to the `docker` group, and document that Docker group membership provides root-equivalent control of the host.
+
+The project focuses on infrastructure creation and host preparation. A small NGINX container and a small database container may be used to prove connectivity; a complete application is not required.
+
+## Required Workflow
 
 ```bash
 terraform init
@@ -94,58 +142,68 @@ terraform validate
 terraform plan -out=tfplan
 terraform apply tfplan
 terraform output
+terraform plan
 terraform destroy
 ```
 
-## Change and Drift Exercises
+After the first successful apply, a second `terraform plan` should not propose unintended infrastructure changes.
 
-- Change one web VM's memory or CPU using Terraform and review the plan before applying it.
-- Add a third web VM using a variable such as `web_instance_count`.
-- Change one Terraform-managed resource manually with `virsh`.
-- Run `terraform plan` and explain the detected drift.
-- Restore the declared configuration through Terraform.
+## Security Validation
 
-Do not create drift by editing the Terraform state file.
+Students must demonstrate:
 
-## Comparison Report
+```bash
+sshd -T
+sudo ufw status verbose
+sudo ss -tulpn
+sudo fail2ban-client status sshd
+systemctl is-enabled unattended-upgrades
+systemctl is-active docker
+docker version
+docker compose version
+```
 
-Create `VAGRANT_VS_TERRAFORM.md` and answer:
+They must also test:
 
-- Which files describe the VMs in each implementation?
-- How does each tool track infrastructure?
-- What happens when a VM is changed manually?
-- How does each tool create, update and destroy machines?
-- Which tool is easier for a developer workstation?
-- Which approach is closer to managing cloud infrastructure?
-- Why should Terraform not call Vagrant through `local-exec`?
+- Root SSH login fails.
+- Password-based SSH login fails.
+- Key-based SSH login succeeds.
+- HTTP or HTTPS reaches the web VMs.
+- The web VMs can reach the database service over the backend network.
+- The host cannot reach the database service port.
+- Docker and the test containers return after a VM reboot.
 
 ## Deliverables
 
-- `vagrant/Vagrantfile` and its bootstrap scripts.
-- `terraform/` containing providers, modules, variables, outputs and environment values.
-- Cloud-init configuration for the Terraform VMs.
-- `.terraform.lock.hcl`, `.gitignore` and `terraform.tfvars.example`.
-- `VAGRANT_VS_TERRAFORM.md`.
-- A README with prerequisites, commands, tests, cleanup and troubleshooting.
+- Terraform configuration with pinned provider versions, variables and outputs.
+- One multi-machine `Vagrantfile`.
+- Separate, idempotent provisioning and hardening scripts.
+- `.terraform.lock.hcl` and a safe `.gitignore`.
+- `terraform.tfvars.example` containing no secrets.
+- A network and traffic-flow diagram.
+- A README with prerequisites, deployment, verification, troubleshooting and cleanup instructions.
+- A short security report listing open ports, enabled services and accepted risks.
 
-## Important State and Security Rules
+## Evaluation Rules
 
-- Never commit Terraform state or saved plan files.
-- Terraform state may contain sensitive values even when variables are marked sensitive.
-- Never place passwords or private SSH keys in the Vagrantfile, Terraform code or cloud-init files committed to Git.
-- Use generated keys or instructor-approved secret handling.
-- Document how remote encrypted state and locking would work for a real team.
+The project fails if:
 
-## Validation
+- A password, token or private key is committed.
+- Root or password-based SSH login remains enabled without an approved reason.
+- The database port is reachable from the host or frontend network.
+- Docker is installed manually after `terraform apply`.
+- Provisioning fails on a second run.
+- `terraform destroy` leaves undocumented running VMs.
 
-- `vagrant up` creates the complete three-VM Vagrant lab.
-- `vagrant destroy` removes the Vagrant-managed VMs.
-- `terraform apply` creates the equivalent three-VM libvirt lab.
-- The web VMs can reach the private database service.
-- The host cannot directly reach the database service port.
-- Terraform detects the demonstrated manual drift.
-- `terraform destroy` removes the Terraform-managed VMs, networks and disks selected for destruction.
-- A clean rebuild succeeds for both implementations.
+## Cleanup
+
+Run `terraform destroy` and verify that all lab VMs are removed. If a VM was removed from the `Vagrantfile` before it was destroyed, clean it up explicitly and run:
+
+```bash
+vagrant global-status --prune
+```
+
+Document any resource that requires manual cleanup.
 
 ## Estimated Time
 

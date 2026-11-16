@@ -11,7 +11,7 @@
 | 06 | [Backup and Recovery](Beginner-Project06-Backup-and-Recovery/README.md) | Back up, delete and successfully restore application data. |
 | 07 | [Monitoring](Beginner-Project07-Monitoring/README.md) | Detect failures with metrics, dashboards and alerts. |
 | 08 | [Kubernetes](Beginner-Project08-Kubernetes/README.md) | Move the containerized application to K3s or K3d. |
-| 09 | [Terraform and Vagrant VMs](Beginner-Project09-Local-Terraform/README.md) | Build the same local VM lab with Vagrant and Terraform. |
+| 09 | [Terraform with Secure Vagrant VMs](Beginner-Project09-Local-Terraform/README.md) | Build and secure a local multi-VM Docker lab through Terraform. |
 | 10 | [CI/CD and Observability](Beginner-Project10-CICD-and-Observability/README.md) | Test, release, observe and roll back an application. |
 
 ## How the Track Works
@@ -39,4 +39,3 @@ Every project submission should contain:
 - Projects 05-07: beginner DevOps operations.
 - Projects 08-10: beginner-to-intermediate platform engineering.
 
-Advanced subjects such as kubeadm, GitOps and a full logging stack can be added later as a separate intermediate track.
