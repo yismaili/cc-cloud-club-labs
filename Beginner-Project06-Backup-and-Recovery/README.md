@@ -41,3 +41,7 @@ Protect the containerized application, simulate data loss and restore a working 
 ## Estimated Time
 
 One week.
+
+<p align="center">
+  <img src="../images/next-level.png" alt="Hit the next level" width="600">
+</p>

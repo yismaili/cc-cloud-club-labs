@@ -40,3 +40,7 @@ Every project submission should contain:
 - Projects 08-10: beginner-to-intermediate platform engineering.
 
 Advanced subjects such as kubeadm, GitOps and a full logging stack can be added later as a separate intermediate track.
+
+<p align="center">
+  <img src="images/next-level.png" alt="Hit the next level" width="600">
+</p>

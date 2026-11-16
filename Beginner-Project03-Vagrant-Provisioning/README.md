@@ -40,3 +40,7 @@ Rebuild the networking and web-server lab automatically with `vagrant up`.
 ## Estimated Time
 
 One to two weeks.
+
+<p align="center">
+  <img src="../images/vagrant-automation.png" alt="Manual setup gives way to automation" width="600">
+</p>

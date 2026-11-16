@@ -4,6 +4,10 @@
 
 Move the Docker Compose application to a small local Kubernetes cluster using K3s or K3d.
 
+## Introduction
+
+For an introduction to Kubernetes, watch [Kubernetes Tutorial for Beginners — Full Course](https://youtu.be/X48VuDVv0do) before starting the project. You can also use it as a reference while you work.
+
 ## Learning Goals
 
 - Understand Pods, Deployments, Services, Ingress and namespaces.
@@ -43,3 +47,7 @@ Move the Docker Compose application to a small local Kubernetes cluster using K3
 ## Estimated Time
 
 Two to three weeks.
+
+<p align="center">
+  <img src="../images/kubernetes.png" alt="Mission accomplished" width="600">
+</p>
