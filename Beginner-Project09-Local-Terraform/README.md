@@ -208,3 +208,7 @@ Document any resource that requires manual cleanup.
 ## Estimated Time
 
 Two to three weeks.
+
+<p align="center">
+  <img src="../images/terraform.png" alt="Terraform combines infrastructure tools" width="600">
+</p>

@@ -12,7 +12,7 @@
 | 07 | [Monitoring](Beginner-Project07-Monitoring/README.md) | Detect failures with metrics, dashboards and alerts. |
 | 08 | [Kubernetes](Beginner-Project08-Kubernetes/README.md) | Move the containerized application to K3s or K3d. |
 | 09 | [Terraform with Secure Vagrant VMs](Beginner-Project09-Local-Terraform/README.md) | Build and secure a local multi-VM Docker lab through Terraform. |
-| 10 | [CI/CD and Observability](Beginner-Project10-CICD-and-Observability/README.md) | Test, release, observe and roll back an application. |
+| 10 | [CI/CD](Beginner-Project10-CICD/README.md) | Test, package, release and roll back an application. |
 
 ## How the Track Works
 
@@ -39,3 +39,6 @@ Every project submission should contain:
 - Projects 05-07: beginner DevOps operations.
 - Projects 08-10: beginner-to-intermediate platform engineering.
 
+<p align="center">
+  <img src="images/next-level.png" alt="Hit the next level" width="600">
+</p>

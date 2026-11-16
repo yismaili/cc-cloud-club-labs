@@ -4,6 +4,10 @@
 
 Test, package, release and safely roll back the application built during the track.
 
+## Introduction
+
+For a quick introduction to CI/CD, watch [CI/CD Explained in 5 Minutes](https://www.youtube.com/watch?v=ddDJxFnv-qs) before starting the project.
+
 ## Learning Goals
 
 - Understand the difference between CI, continuous delivery and continuous deployment.
@@ -65,3 +69,7 @@ If you deploy, add a health check after deploy and treat a failed check as a fai
 ## Estimated Time
 
 One to two weeks.
+
+<p align="center">
+  <img src="../images/next-level.png" alt="Hit the next level" width="600">
+</p>

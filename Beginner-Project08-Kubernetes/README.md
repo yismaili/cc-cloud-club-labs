@@ -2,7 +2,11 @@
 
 ## Subject
 
-Move the Docker Compose application to a small local Kubernetes cluster. You can use K3s, K3d or the built-in Kubernetes in Docker Desktop.
+Move the Docker Compose application to a small local Kubernetes cluster using K3s or K3d.
+
+## Introduction
+
+For an introduction to Kubernetes, watch [Kubernetes Tutorial for Beginners — Full Course](https://youtu.be/X48VuDVv0do) before starting the project. You can also use it as a reference while you work.
 
 ## Learning Goals
 
@@ -13,7 +17,18 @@ Move the Docker Compose application to a small local Kubernetes cluster. You can
 
 ## Architecture
 
-![Kubernetes architecture](images/k8s-architecture.png)
+```mermaid
+flowchart LR
+    client[Client] --> ingress[Ingress controller]
+    ingress --> service[Application Service]
+    service --> app1[TODO application Pod 1]
+    service --> app2[TODO application Pod 2]
+    app1 --> dbservice[Database Service]
+    app2 --> dbservice
+    dbservice --> db[Database Pod]
+    db --- pvc[Database PersistentVolumeClaim]
+    pvc --- volume[(PersistentVolume)]
+```
 
 ## Ephemeral vs Persistent Storage
 
@@ -82,3 +97,7 @@ You may use the official Kubernetes documentation at https://kubernetes.io/docs/
 ## Estimated Time
 
 Two to three weeks.
+
+<p align="center">
+  <img src="../images/kubernetes.png" alt="Mission accomplished" width="600">
+</p>

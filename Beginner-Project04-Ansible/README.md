@@ -40,3 +40,7 @@ Configure several Linux machines from one controller using reusable Ansible auto
 ## Estimated Time
 
 One to two weeks.
+
+<p align="center">
+  <img src="../images/next-level.png" alt="Hit the next level" width="600">
+</p>
