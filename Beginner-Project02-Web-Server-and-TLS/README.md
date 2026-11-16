@@ -40,7 +40,3 @@ Host two websites with NGINX and protect them with HTTPS.
 ## Estimated Time
 
 One week.
-
-<p align="center">
-  <img src="../images/next-level.png" alt="Hit the next level" width="600">
-</p>

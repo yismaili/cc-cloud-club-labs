@@ -53,6 +53,3 @@ Continue generating traffic during the outage and after recovery so the dashboar
 
 One to two weeks.
 
-<p align="center">
-  <img src="../images/next-level.png" alt="Hit the next level" width="600">
-</p>

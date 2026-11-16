@@ -43,6 +43,3 @@ Build your first Linux server inside a virtual machine and secure it like a smal
 
 One to two weeks.
 
-<p align="center">
-  <img src="../images/next-level.png" alt="Hit the next level" width="600">
-</p>

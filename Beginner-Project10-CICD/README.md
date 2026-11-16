@@ -70,6 +70,3 @@ If you deploy, add a health check after deploy and treat a failed check as a fai
 
 One to two weeks.
 
-<p align="center">
-  <img src="../images/next-level.png" alt="Hit the next level" width="600">
-</p>
