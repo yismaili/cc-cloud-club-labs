@@ -39,8 +39,40 @@ Every project submission should contain:
 - Projects 05-07: beginner DevOps operations.
 - Projects 08-10: beginner-to-intermediate platform engineering.
 
-Advanced subjects such as kubeadm, GitOps and a full logging stack can be added later as a separate intermediate track.
+
+Once you finish beginner projects , you have to start advanced project.
 
 <p align="center">
   <img src="images/next-level.png" alt="Hit the next level" width="600">
 </p>
+
+
+## Advanced Team Capstones
+
+Advanced projects are semester projects for teams. A team normally selects one project; these projects are not a sequence that every student must complete.
+
+| Project | Subject | Main outcome |
+| --- | --- | --- |
+| 01 | [CI/CD with Cloud Infrastructure as Code](Advanced-Project01-CICD-Cloud-IaC/README.md) | Build a secure cloud delivery pipeline with Terraform and immutable releases. |
+| 02 | [Observability and SRE](Advanced-Project02-Observability-SRE/README.md) | Diagnose failures by connecting metrics, logs, traces and SLOs. |
+| 03 | [GitOps and Progressive Delivery](Advanced-Project03-GitOps-Progressive-Delivery/README.md) | Deliver canary or blue-green releases from Git with metric-based rollback. |
+| 04 | [Mini Kubernetes PaaS](Advanced-Project04-Mini-Kubernetes-PaaS/README.md) | Build a safe internal platform for deploying approved applications. |
+| 05 | [Knative Serverless Platform](Advanced-Project05-Knative-Serverless/README.md) | Operate scale-to-zero HTTP services and event-driven workloads. |
+| 06 | [FinOps with OpenCost](Advanced-Project06-FinOps-OpenCost/README.md) | Allocate Kubernetes cost and produce budget and rightsizing recommendations. |
+| 07 | [OpenBao Encryption Service](Advanced-Project07-OpenBao-Encryption-Service/README.md) | Provide identity-based encryption without exposing raw keys. |
+| 08 | [Kubernetes Runtime Security](Advanced-Project08-Kubernetes-Runtime-Security/README.md) | Combine admission policy with eBPF runtime detection. |
+| 09 | [Software Supply Chain Security](Advanced-Project09-Software-Supply-Chain-Security/README.md) | Scan, inventory, sign and verify software artifacts before deployment. |
+| 10 | [Kubernetes Backup and Disaster Recovery](Advanced-Project10-Kubernetes-Backup-DR/README.md) | Prove stateful application recovery against defined RPO and RTO targets. |
+| 11 | [Open Data Lake Platform](Advanced-Project11-Data-Lake/README.md) | Stream, store and query analytical data using open components. |
+| 12 | [SRE Incident Game Day](Advanced-Project12-SRE-Incident-Game-Day/README.md) | Practice measurable incident response and blameless improvement. |
+
+## Advanced Project Rules
+
+- Teams should contain 2-4 students unless the project says otherwise.
+- Every team must define member roles, milestones and weekly evidence.
+- Cloud projects require an instructor-approved account, maximum budget and cleanup plan.
+- Students must use synthetic data and must not process personal.
+- A project passes only when the team demonstrates behavior, failure handling and cleanup.
+- Optional extensions are evaluated only after all mandatory milestones pass.
+
+Have Fun :D
