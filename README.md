@@ -39,6 +39,8 @@ Every project submission should contain:
 - Projects 05-07: beginner DevOps operations.
 - Projects 08-10: beginner-to-intermediate platform engineering.
 
+Once you finish beginner projects , you have to start advanced project. 
+
 <p align="center">
   <img src="images/next-level.png" alt="Hit the next level" width="600">
 </p>
